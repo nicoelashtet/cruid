@@ -1,0 +1,30 @@
+CREATE TABLE IF NOT EXISTS public.product
+(
+    product_id integer NOT NULL DEFAULT nextval('product_product_id_seq'::regclass),
+    product_name character varying(50) COLLATE pg_catalog."default",
+    product_qty integer,
+    product_price integer,
+    CONSTRAINT product_pkey PRIMARY KEY (product_id)
+)
+WITH (
+    OIDS = FALSE
+)
+TABLESPACE pg_default;
+
+
+
+
+CREATE SEQUENCE public.product_product_id_seq
+    INCREMENT 1
+    START 1
+    MINVALUE 1
+    MAXVALUE 2147483647
+    CACHE 1;
+
+
+
+ALTER SEQUENCE public.product_product_id_seq
+    OWNER TO postgres;
+
+ALTER TABLE public.product
+    OWNER TO postgres;
