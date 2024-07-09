@@ -1,30 +1,24 @@
-CREATE TABLE IF NOT EXISTS public.product
-(
-    product_id integer NOT NULL DEFAULT nextval('product_product_id_seq'::regclass),
-    product_name character varying(50) COLLATE pg_catalog."default",
-    product_qty integer,
-    product_price integer,
-    CONSTRAINT product_pkey PRIMARY KEY (product_id)
-)
-WITH (
-    OIDS = FALSE
-)
-TABLESPACE pg_default;
-
-
-
-
+-- Drop the existing sequence and table if they exist
+DROP SEQUENCE IF EXISTS public.product_product_id_seq CASCADE;
+DROP TABLE IF EXISTS public.product;
+ 
+-- Create a new sequence
 CREATE SEQUENCE public.product_product_id_seq
     INCREMENT 1
     START 1
     MINVALUE 1
     MAXVALUE 2147483647
     CACHE 1;
-
-
-
-ALTER SEQUENCE public.product_product_id_seq
-    OWNER TO postgres;
-
-ALTER TABLE public.product
-    OWNER TO postgres;
+ 
+-- Create the product table with a default value for product_id using the sequence
+CREATE TABLE public.product (
+    product_id INTEGER NOT NULL DEFAULT nextval('public.product_product_id_seq'),
+    product_name VARCHAR(50),
+    product_qty INTEGER,
+    product_price INTEGER,
+    CONSTRAINT product_pkey PRIMARY KEY (product_id)
+);
+ 
+-- Set the owner of the table and sequence
+ALTER SEQUENCE public.product_product_id_seq OWNED BY public.product.product_id;
+ALTER TABLE public.product OWNER TO postgres;
